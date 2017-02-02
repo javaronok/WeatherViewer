@@ -8,7 +8,6 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 ext {
-    genJava = "$projectDir/src/main/gen"
     genResources = "$projectDir/src/main/resources"
 }
 
@@ -74,5 +73,5 @@ dependencies {
 }
 
 war {
-    archiveName 'ssm.war'
+    archiveName 'weather.war'
 }

@@ -1,0 +1,23 @@
+<configuration>
+    <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <Pattern>.%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg %n
+            </Pattern>
+        </encoder>
+        <!--filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>WARN</level>
+        </filter-->
+    </appender>
+
+    <logger name="weather.viewer">
+        <level value="WARN" />
+        <!--appender-ref ref="dailyRollingFileAppender"/>
+        <appender-ref ref="minuteRollingFileAppender"/-->
+        <!--appender-ref ref="consoleAppender" /-->
+    </logger>
+
+    <root>
+        <level value="WARN" />
+        <appender-ref ref="consoleAppender" />
+    </root>
+</configuration>
