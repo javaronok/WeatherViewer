@@ -10,7 +10,7 @@
 <body>
 
 <input id="weatherByCity" type="hidden" value="<c:url value="/weather/weather_by_city"/>">
-<input id="weatherByCords" type="hidden" value="<c:url value="/weather/weather_by_coords"/>">
+<input id="weatherByCoords" type="hidden" value="<c:url value="/weather/weather_by_coords"/>">
 
 <div id="wrapper">
   <jsp:include page="header.jsp"/>
@@ -27,22 +27,22 @@
         <div class="col-lg-4">
           <div class="panel panel-primary">
             <div class="panel-heading">
-              Weather in {city}
+              Weather in {data.name}
             </div>
             <div class="panel-body">
               <div class="row">
                 <span class="col col-2" style="display:inline-block;">
-                  <img alt="Weather in Moscow, RU" src="http://openweathermap.org/themes/openweathermap/assets/vendor/owm/img/widgets/01d.png" width="128" height="128">
+                  <img rv-walt="data.name" rv-wsrc="data.weather.icon" width="128" height="128">
                 </span>
                 <span class="col col-2" style="display:inline-block;">
-                  <h1>-7<span>°</span></h1>
+                  <h1>{data.main.temp}<span>°</span></h1>
                 </span>
                 <span class="col col-2 col-lg-offset-1" style="display:inline-block;">
                                 <div class="row">
-                                    <span><strong>{data.main}</strong></span>
+                                    <span><strong>{data.weather.main}</strong></span>
                                 </div>
                                 <div class="row">
-                                    <span>{data.description}</span>
+                                    <span>{data.weather.description}</span>
                                 </div>
                 </span>
               </div>

@@ -4,9 +4,6 @@
 <!-- Bootstrap Core JavaScript -->
 <script src="<c:url value="/libs/bootstrap/js/bootstrap.min.js"/>"></script>
 
-<!-- Rivets lib -->
-<script src="<c:url value="/libs/rivets/rivets.js"/>"></script>
-
 <!-- Metis Menu Plugin JavaScript -->
 <script src="<c:url value="/libs/metisMenu/metisMenu.js"/>"></script>
 

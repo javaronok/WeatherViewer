@@ -1,7 +1,7 @@
 package weather.viewer.config;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
@@ -9,7 +9,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
@@ -22,8 +21,7 @@ import java.util.List;
 @EnableWebMvc
 @ComponentScan(basePackages = { "weather.viewer" })
 @EnableAsync
-@EnableScheduling
-@PropertySource(value = {"classpath:session.properties"})
+@PropertySource(value = {"classpath:session.properties", "classpath:client.properties"})
 public class AppWebMVCConfig extends WebMvcConfigurerAdapter {
 
     @Autowired
@@ -43,10 +41,12 @@ public class AppWebMVCConfig extends WebMvcConfigurerAdapter {
         return bean;
     }
 
+    @Bean
     public MappingJackson2HttpMessageConverter jacksonMessageConverter(){
         MappingJackson2HttpMessageConverter messageConverter = new MappingJackson2HttpMessageConverter();
 
         ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         messageConverter.setObjectMapper(mapper);
         return messageConverter;
     }

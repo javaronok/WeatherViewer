@@ -29,3 +29,6 @@
 
 <!-- jQuery -->
 <script src="<c:url value="/libs/jquery/jquery.min.js"/>"></script>
+
+<!-- Rivets lib -->
+<script src="<c:url value="/libs/rivets/rivets.js"/>"></script>

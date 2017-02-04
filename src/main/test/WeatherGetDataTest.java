@@ -1,44 +1,44 @@
-package weather.viewer.controller;
-
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.PropertyResolver;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import weather.viewer.config.AppWebMVCConfig;
 import weather.viewer.model.WeatherData;
 import weather.viewer.service.*;
 
 /**
  * User: Gorchakov Dmitriy
- * Date: 02.02.2017.
+ * Date: 03.02.2017.
  */
-@RestController
-@RequestMapping("weather")
-public class WeatherController {
-
-  private static final String WEATHER_BY_CITY = "weather_by_city";
-  private static final String WEATHER_BY_COORDS = "weather_by_coords";
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = {AppWebMVCConfig.class})
+@WebAppConfiguration
+public class WeatherGetDataTest {
 
   @Autowired private ClientExecutorService clientService;
   @Autowired private PropertyResolver resolver;
   @Autowired private MappingJackson2HttpMessageConverter converter;
 
-  @ResponseBody
-  @RequestMapping(value = WEATHER_BY_CITY, method = RequestMethod.GET, produces = "application/json")
-  public WeatherData getWeatherByCityName(@RequestParam("city") String city) {
+  @Test
+  public void testGetWeatherByCity() {
     String key = resolver.getProperty("weather.key");
-    ClientCommand command = new GetWeatherByCity(key, city);
+    ClientCommand command = new GetWeatherByCity(key, "London");
     HttpResponseHandler<WeatherData> resultHandler = new WeatherDataResponseHandler(converter.getObjectMapper());
     int code = clientService.invoke(command, resultHandler);
-    return resultHandler.getResult();
+    WeatherData result = resultHandler.getResult();
   }
 
-  @ResponseBody
-  @RequestMapping(value = WEATHER_BY_COORDS, method = RequestMethod.GET, produces = "application/json")
-  public WeatherData getWeatherByCoords(@RequestParam("lat") Float lat, @RequestParam("lon") Float lon) {
+  @Test
+  public void testGetWeatherByCoords() {
     String key = resolver.getProperty("weather.key");
-    ClientCommand command = new GetWeatherByCoords(key, lon, lat);
+    ClientCommand command = new GetWeatherByCoords(key, new Float(-0.13), new Float(51.51));
     HttpResponseHandler<WeatherData> resultHandler = new WeatherDataResponseHandler(converter.getObjectMapper());
     int code = clientService.invoke(command, resultHandler);
-    return resultHandler.getResult();
+    WeatherData result = resultHandler.getResult();
   }
+
 }

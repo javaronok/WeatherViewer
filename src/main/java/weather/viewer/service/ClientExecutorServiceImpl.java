@@ -9,7 +9,6 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Map;
 
@@ -55,21 +54,5 @@ public class ClientExecutorServiceImpl implements ClientExecutorService {
 
     return new HttpGet(uriBuilder.build());
   }
-
-  private HttpGet createOperationText(ClientCommand command) {
-    StringBuilder sb = new StringBuilder(command.getUrl());
-
-    Map<String, String> params = command.getSearchParams();
-    if (!params.isEmpty()) {
-      StringBuilder clientParams = new StringBuilder();
-      for (Map.Entry<String, String> e : params.entrySet()) {
-        clientParams.append("&").append(e.getKey()).append("=").append(e.getValue());
-      }
-      sb.append("?").append(clientParams.substring(1));
-    }
-
-    return new HttpGet(sb.toString());
-  }
-
 
 }
