@@ -2,10 +2,11 @@ package weather.viewer.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.PropertyResolver;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.bind.annotation.*;
 import weather.viewer.model.WeatherData;
 import weather.viewer.service.*;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * User: Gorchakov Dmitriy
@@ -18,18 +19,15 @@ public class WeatherController {
   private static final String WEATHER_BY_CITY = "weather_by_city";
   private static final String WEATHER_BY_COORDS = "weather_by_coords";
 
-  @Autowired private ClientExecutorService clientService;
   @Autowired private PropertyResolver resolver;
-  @Autowired private MappingJackson2HttpMessageConverter converter;
+  @Autowired private ClientTaskExecutorService taskExecutor;
 
   @ResponseBody
   @RequestMapping(value = WEATHER_BY_CITY, method = RequestMethod.GET, produces = "application/json")
   public WeatherData getWeatherByCityName(@RequestParam("city") String city) {
     String key = resolver.getProperty("weather.key");
     ClientCommand command = new GetWeatherByCity(key, city);
-    HttpResponseHandler<WeatherData> resultHandler = new WeatherDataResponseHandler(converter.getObjectMapper());
-    int code = clientService.invoke(command, resultHandler);
-    return resultHandler.getResult();
+    return taskExecutor.invokeClient(command);
   }
 
   @ResponseBody
@@ -37,8 +35,13 @@ public class WeatherController {
   public WeatherData getWeatherByCoords(@RequestParam("lat") Float lat, @RequestParam("lon") Float lon) {
     String key = resolver.getProperty("weather.key");
     ClientCommand command = new GetWeatherByCoords(key, lon, lat);
-    HttpResponseHandler<WeatherData> resultHandler = new WeatherDataResponseHandler(converter.getObjectMapper());
-    int code = clientService.invoke(command, resultHandler);
-    return resultHandler.getResult();
+    return taskExecutor.invokeClient(command);
+  }
+
+  @ResponseBody
+  @ExceptionHandler(Exception.class)
+  public String handleException(Exception e, HttpServletResponse response) {
+    response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+    return e.getMessage();
   }
 }

@@ -14,6 +14,13 @@ rivets.binders.walt = function(el, value) {
 
 $(function($){
 
+    $(document).ajaxStart(function(){
+        $("#ajax_loader").show();
+    });
+    $(document).ajaxStop(function(){
+        $("#ajax_loader").hide();
+    });
+
     $(document).ready(function() {
         rivetsModelBinder = rivets.bind($('.weather-container'), weatherDataModel);
         requestWeatherData();
@@ -30,25 +37,6 @@ function requestWeatherData() {
         navigator.geolocation.getCurrentPosition(
             // Функция обратного вызова при успешном извлечении локации
             function(position) {
-
-                /*
-                 В объекте position изложена подробная информация
-                 о позиции устройства:
-
-                 position = {
-                 coords: {
-                 latitude - Широта.
-                 longitude - Долгота.
-                 altitude - Высота в метрах над уровнем моря.
-                 accuracy - Погрешность в метрах.
-                 altitudeAccuracy - Погрешность высоты над уровнем моря в метрах.
-                 heading - Направление устройства по отношению к северу.
-                 speed - Скорость в метрах в секунду.
-                 }
-                 timestamp - Время извлечения информации.
-                 }
-                 */
-
                 requestByCoords(position.coords.latitude, position.coords.longitude);
             },
 
@@ -67,7 +55,7 @@ function requestWeatherData() {
                  }
                  */
 
-                alert(error);
+                alert(error); // todo: убрать
             }
         );
     }
@@ -80,11 +68,15 @@ function requestWeatherData() {
 function requestByCoords(lat, lon) {
     $.getJSON($('#weatherByCoords').val(), {lat: lat, lon: lon}, function (data) {
         viewWeatherData(data);
+    }).fail(function( jqxhr, textStatus, error ) {
+        console.log( "Request Failed: " + jqxhr.responseText ); // todo: добавить нотификацию
     });
 }
 
 function requestByCity(city) {
     $.getJSON($('#weatherByCity').val(), {city: city}, function (data) {
         viewWeatherData(data);
+    }).fail(function( jqxhr, textStatus, error ) {
+        console.log( "Request Failed: " + jqxhr.responseText );  // todo: добавить нотификацию
     });
 }

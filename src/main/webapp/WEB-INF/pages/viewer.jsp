@@ -57,6 +57,11 @@
       <!-- END MAIN CONTENT -->
     </div>
   </div>
+
+  <div id='ajax_loader' style="position: fixed; left: 50%; top: 50%; display: none;">
+      <img src="<c:url value="/img/ajax-loader.gif"/>"/>
+  </div>
+
 <script src="<c:url value="/js/viewer.js"/>"></script>
 
 <jsp:include page="foot.jsp" />

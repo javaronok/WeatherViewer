@@ -17,6 +17,7 @@ import java.io.InputStream;
 public class WeatherDataResponseHandler implements HttpResponseHandler<WeatherData> {
   private final ObjectMapper mapper;
   private WeatherData result;
+  private String erroMessage;
 
   public WeatherDataResponseHandler(ObjectMapper mapper) {
     this.mapper = mapper;
@@ -44,7 +45,7 @@ public class WeatherDataResponseHandler implements HttpResponseHandler<WeatherDa
 
   @Override
   public void handleError(HttpResponse response) throws IOException {
-
+    this.erroMessage = "error"; //todo
   }
 
   @Override
@@ -54,6 +55,6 @@ public class WeatherDataResponseHandler implements HttpResponseHandler<WeatherDa
 
   @Override
   public String getErrorText() {
-    return null;
+    return erroMessage;
   }
 }

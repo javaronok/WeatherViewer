@@ -9,6 +9,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
@@ -51,6 +52,14 @@ public class AppWebMVCConfig extends WebMvcConfigurerAdapter {
         return messageConverter;
     }
 
+    @Bean
+    public ThreadPoolTaskExecutor taskExecutor() {
+        ThreadPoolTaskExecutor taskQueue = new ThreadPoolTaskExecutor();
+        taskQueue.setCorePoolSize(1);
+        taskQueue.setMaxPoolSize(1);
+        return taskQueue;
+    }
+
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         converters.add(jacksonMessageConverter());
@@ -61,10 +70,8 @@ public class AppWebMVCConfig extends WebMvcConfigurerAdapter {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/css/**").addResourceLocations("/css/");
         registry.addResourceHandler("/js/**").addResourceLocations("/js/");
-        registry.addResourceHandler("/images/**").addResourceLocations("/images/");
+        registry.addResourceHandler("/img/**").addResourceLocations("/img/");
         registry.addResourceHandler("/libs/**").addResourceLocations("/libs/");
-        registry.addResourceHandler("/fonts/**").addResourceLocations("/fonts/");
-        registry.addResourceHandler("/sound/**").addResourceLocations("/sound/");
     }
 
 }
