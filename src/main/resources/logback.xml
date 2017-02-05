@@ -1,23 +1,28 @@
 <configuration>
-    <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <Pattern>.%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg %n
-            </Pattern>
-        </encoder>
-        <!--filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>WARN</level>
-        </filter-->
-    </appender>
+  <property name="server.home" value="../logs" />
 
-    <logger name="weather.viewer">
-        <level value="WARN" />
-        <!--appender-ref ref="dailyRollingFileAppender"/>
-        <appender-ref ref="minuteRollingFileAppender"/-->
-        <!--appender-ref ref="consoleAppender" /-->
-    </logger>
+  <appender name="file" class="ch.qos.logback.core.FileAppender">
+    <file>${server.home}/weather.log</file>
+    <encoder>
+      <Pattern>.%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg %n</Pattern>
+    </encoder>
+  </appender>
 
-    <root>
-        <level value="WARN" />
-        <appender-ref ref="consoleAppender" />
-    </root>
+  <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <Pattern>.%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg %n</Pattern>
+    </encoder>
+    <withJansi>true</withJansi>
+  </appender>
+
+  <logger name="weather.viewer">
+    <level value="INFO"/>
+  </logger>
+
+  <root>
+    <level value="ERROR"/>
+    <appender-ref ref="console"/>
+    <appender-ref ref="file"/>
+  </root>
+
 </configuration>
