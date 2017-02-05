@@ -1,0 +1,8 @@
+.gradle
+gradlew
+gradlew.bat
+WeatherViewer.iml
+/.idea/libraries/Gradle__*.xml
+/.idea/artifacts/Gradle__*.xml
+classes
+build
