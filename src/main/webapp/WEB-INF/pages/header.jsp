@@ -51,7 +51,11 @@
         </li>
         <li>
           <a href="<c:url value="/viewer"/>"><i class="fa fa-dashboard fa-fw"></i> Weather view</a>
-          <a href="<c:url value="/login"/>"><i class="fa fa-user fa-fw"></i> SignIn</a>
+          <c:choose>
+          <c:when test="${!isAuth}">
+            <a href="<c:url value="/login"/>"><i class="fa fa-user fa-fw"></i> SignIn</a>
+          </c:when>
+          </c:choose>
         </li>
       </ul>
     </div>
