@@ -6,6 +6,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -18,6 +20,9 @@ import java.util.Map;
  */
 @Service
 public class ClientExecutorServiceImpl implements ClientExecutorService {
+
+  Logger LOG =  LoggerFactory.getLogger(ClientExecutorServiceImpl.class);
+
   @Override
   public int invoke(ClientCommand command, HttpResponseHandler handler) {
     CloseableHttpClient client = HttpClientBuilder.create().build();
@@ -32,6 +37,7 @@ public class ClientExecutorServiceImpl implements ClientExecutorService {
         handler.handleError(response);
       return status;
     } catch (IOException | URISyntaxException e) {
+      LOG.error("Request exception", e);
       throw new BadRequestException(e);
     } finally {
       try {
