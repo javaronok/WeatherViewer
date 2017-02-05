@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
+import weather.viewer.model.ErrorMessage;
 import weather.viewer.model.WeatherData;
 import weather.viewer.util.StreamUtils;
 
@@ -17,7 +18,7 @@ import java.io.InputStream;
 public class WeatherDataResponseHandler implements HttpResponseHandler<WeatherData> {
   private final ObjectMapper mapper;
   private WeatherData result;
-  private String erroMessage;
+  private ErrorMessage errorMessage;
 
   public WeatherDataResponseHandler(ObjectMapper mapper) {
     this.mapper = mapper;
@@ -38,14 +39,24 @@ public class WeatherDataResponseHandler implements HttpResponseHandler<WeatherDa
           this.result = mapper.readValue(json, WeatherData.class);
         }
       } catch (IOException e) {
-        throw new RuntimeException(e);
+        throw new BadRequestException(e);
       }
     }
   }
 
   @Override
   public void handleError(HttpResponse response) throws IOException {
-    this.erroMessage = "error"; //todo
+    HttpEntity entity = response.getEntity();
+    if (entity != null) {
+      try {
+        try (InputStream content = entity.getContent()) {
+          String json = StreamUtils.readToString(content);
+          this.errorMessage = mapper.readValue(json, ErrorMessage.class);
+        }
+      } catch (IOException e) {
+        throw new BadRequestException(e);
+      }
+    }
   }
 
   @Override
@@ -54,7 +65,7 @@ public class WeatherDataResponseHandler implements HttpResponseHandler<WeatherDa
   }
 
   @Override
-  public String getErrorText() {
-    return erroMessage;
+  public ErrorMessage getErrorMessage() {
+    return this.errorMessage;
   }
 }

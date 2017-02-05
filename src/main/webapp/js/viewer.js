@@ -29,6 +29,7 @@ $(function($){
 });
 
 function viewWeatherData(data) {
+    weatherDataModel.error = null;
     weatherDataModel.data = data;
 }
 
@@ -55,29 +56,28 @@ function requestWeatherData() {
                  message - Детальная информация.
                  }
                  */
-
-                alert(error); // todo: убрать
+                handleError({responseText: error.message});
             }
         );
     } else {
         // Геолокация не доступна
-        requestByCity('London'); //todo
+        handleError({responseText: 'Geolocation is not supported by your browser'});
     }
 }
 
 function requestByCoords(lat, lon) {
     $.getJSON($('#weatherByCoords').val(), {lat: lat, lon: lon}, function (data) {
         viewWeatherData(data);
-    }).fail(function( jqxhr, textStatus, error ) {
-        console.log( "Request Failed: " + jqxhr.responseText ); // todo: добавить нотификацию
+    }).fail(function(error) {
+        handleError(error);
     });
 }
 
 function requestByCity(city) {
     $.getJSON($('#weatherByCity').val(), {city: city}, function (data) {
         viewWeatherData(data);
-    }).fail(function( jqxhr, textStatus, error ) {
-        console.log( "Request Failed: " + jqxhr.responseText );  // todo: добавить нотификацию
+    }).fail(function(error) {
+        handleError(error);
     }).always(function() {
         $('input.search-input').val('');
     });
@@ -97,3 +97,8 @@ function initSearchAction() {
     });
 }
 
+function handleError(error) {
+    weatherDataModel.data = null;
+    weatherDataModel.error = {errorText: error.responseText};
+    console.log( "Request Failed: " + error.responseText );
+}

@@ -3,6 +3,7 @@ package weather.viewer.service;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
+import weather.viewer.model.ErrorMessage;
 import weather.viewer.util.StreamUtils;
 
 import java.io.IOException;
@@ -45,7 +46,7 @@ public class TextDataResultHandler implements HttpResponseHandler {
   }
 
   @Override
-  public String getErrorText() {
+  public ErrorMessage getErrorMessage() {
     return null;
   }
 }

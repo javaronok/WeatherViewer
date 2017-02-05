@@ -2,6 +2,7 @@ package weather.viewer.service;
 
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
+import weather.viewer.model.ErrorMessage;
 
 import java.io.IOException;
 
@@ -14,6 +15,6 @@ public interface HttpResponseHandler<T> {
   void handleResponse(HttpResponse response) throws IOException;
   void handleError(HttpResponse response) throws IOException;
   T getResult();
-  String getErrorText();
+  ErrorMessage getErrorMessage();
 }
 

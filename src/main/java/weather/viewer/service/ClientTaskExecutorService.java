@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
+import weather.viewer.model.ErrorMessage;
 import weather.viewer.model.WeatherData;
 
 import java.util.concurrent.ExecutionException;
@@ -21,18 +22,24 @@ public class ClientTaskExecutorService {
 
         Future<WeatherData> f = taskExecutor.submit(() -> {
             int code = clientService.invoke(command, resultHandler);
-            if (HttpStatus.SC_OK == code)
+            if (HttpStatus.SC_OK == code) {
                 return resultHandler.getResult();
-            else
-                throw new RuntimeException(resultHandler.getErrorText());
+            } else {
+                ErrorMessage err = resultHandler.getErrorMessage();
+                throw new BadRequestException(err.getCode(), err.getMessage());
+            }
         });
 
         try {
             return f.get();
         } catch (InterruptedException e) {
-            throw new RuntimeException("Interrupt exception", e);
+            throw new BadRequestException(e);
         } catch (ExecutionException e) {
-            throw new RuntimeException(e);
+            if (e.getCause() instanceof BadRequestException) {
+                BadRequestException ex = (BadRequestException) e.getCause();
+                throw ex;
+            }
+            throw new BadRequestException(e);
         }
     }
 }

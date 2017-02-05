@@ -1,11 +1,14 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
 <html>
 <head>
   <title>Weather viewer</title>
   <jsp:include page="head.jsp" />
 </head>
+
+<link rel="stylesheet" href="<c:url value="/css/viewer.css"/>">
 
 <body>
 
@@ -16,14 +19,19 @@
   <jsp:include page="header.jsp"/>
   <!-- MAIN CONTENT -->
   <div id="page-wrapper">
-    <div rv-show="data" class="container-fluid weather-container">
+    <div class="container-fluid weather-container">
       <div class="row">
         <div class="col-lg-12">
           <h1 class="page-header">Weather view</h1>
         </div>
       </div>
 
-      <div class="row">
+      <div rv-show="error" class="alert alert-danger fade in">
+        <button class="close" data-dismiss="alert">×</button>
+        <strong>Error:</strong> {error.errorText}
+      </div>
+
+      <div rv-show="data" class="row">
         <div class="col-lg-6">
           <div class="panel panel-primary">
             <div class="panel-heading">
@@ -31,13 +39,13 @@
             </div>
             <div class="panel-body">
               <div class="row">
-                <span class="col col-2 clearfix" style="display:inline-block;">
+                <span class="col col-2 weather-item clearfix">
                   <img rv-walt="data.name" rv-wsrc="data.weather.icon" width="128" height="128">
                 </span>
-                <span class="col col-2 clearfix" style="display:inline-block;">
+                <span class="col col-2 weather-item clearfix">
                   <h1>{data.main.temp}<span>°</span></h1>
                 </span>
-                <span class="col col-2 col-lg-offset-1 clearfix" style="display:inline-block;">
+                <span class="col col-2 col-lg-offset-1 weather-item clearfix">
                                 <div class="row">
                                     <span><strong>{data.weather.main}</strong></span>
                                 </div>

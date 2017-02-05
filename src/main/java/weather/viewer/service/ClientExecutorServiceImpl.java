@@ -32,7 +32,7 @@ public class ClientExecutorServiceImpl implements ClientExecutorService {
         handler.handleError(response);
       return status;
     } catch (IOException | URISyntaxException e) {
-      throw new RuntimeException(e);
+      throw new BadRequestException(e);
     } finally {
       try {
         client.close();
