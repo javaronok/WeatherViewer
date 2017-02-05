@@ -23,6 +23,7 @@ $(function($){
 
     $(document).ready(function() {
         rivetsModelBinder = rivets.bind($('.weather-container'), weatherDataModel);
+        initSearchAction();
         requestWeatherData();
     });
 });
@@ -41,7 +42,7 @@ function requestWeatherData() {
             },
 
             // Функция обратного вызова при неуспешном извлечении локации
-            function(error){
+            function(error) {
                 /*
                  При неудаче, будет доступен объект error:
 
@@ -58,10 +59,9 @@ function requestWeatherData() {
                 alert(error); // todo: убрать
             }
         );
-    }
-    else {
+    } else {
         // Геолокация не доступна
-        requestByCity('London');
+        requestByCity('London'); //todo
     }
 }
 
@@ -78,5 +78,22 @@ function requestByCity(city) {
         viewWeatherData(data);
     }).fail(function( jqxhr, textStatus, error ) {
         console.log( "Request Failed: " + jqxhr.responseText );  // todo: добавить нотификацию
+    }).always(function() {
+        $('input.search-input').val('');
     });
 }
+
+function initSearchAction() {
+    $('input.search-input').on('keydown', function(e) {
+        if (e.which == 13) { // Enter pressed
+            e.preventDefault();
+            requestByCity($('input.search-input').val());
+        }
+    });
+
+    $('button.search-button').on('click', function(e) {
+        e.preventDefault();
+        requestByCity($('input.search-input').val());
+    });
+}
+

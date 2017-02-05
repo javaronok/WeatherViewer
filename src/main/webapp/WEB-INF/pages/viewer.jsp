@@ -24,20 +24,20 @@
       </div>
 
       <div class="row">
-        <div class="col-lg-4">
+        <div class="col-lg-6">
           <div class="panel panel-primary">
             <div class="panel-heading">
               Weather in {data.name}
             </div>
             <div class="panel-body">
               <div class="row">
-                <span class="col col-2" style="display:inline-block;">
+                <span class="col col-2 clearfix" style="display:inline-block;">
                   <img rv-walt="data.name" rv-wsrc="data.weather.icon" width="128" height="128">
                 </span>
-                <span class="col col-2" style="display:inline-block;">
+                <span class="col col-2 clearfix" style="display:inline-block;">
                   <h1>{data.main.temp}<span>°</span></h1>
                 </span>
-                <span class="col col-2 col-lg-offset-1" style="display:inline-block;">
+                <span class="col col-2 col-lg-offset-1 clearfix" style="display:inline-block;">
                                 <div class="row">
                                     <span><strong>{data.weather.main}</strong></span>
                                 </div>

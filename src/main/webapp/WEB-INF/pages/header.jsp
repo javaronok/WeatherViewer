@@ -19,9 +19,9 @@
       <ul class="nav" id="side-menu">
         <li class="sidebar-search">
           <div class="input-group custom-search-form">
-            <input type="text" class="form-control" placeholder="Search...">
+            <input type="text" class="form-control search-input" placeholder="Search...">
                                 <span class="input-group-btn">
-                                <button class="btn btn-default" type="button">
+                                <button class="btn btn-default search-button" type="button">
                                   <i class="fa fa-search"></i>
                                 </button>
                             </span>
