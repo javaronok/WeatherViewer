@@ -7,6 +7,7 @@ import weather.viewer.model.WeatherData;
 import weather.viewer.service.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.security.Principal;
 
 /**
  * User: Gorchakov Dmitriy
@@ -24,7 +25,7 @@ public class WeatherController {
 
   @ResponseBody
   @RequestMapping(value = WEATHER_BY_CITY, method = RequestMethod.GET, produces = "application/json")
-  public WeatherData getWeatherByCityName(@RequestParam("city") String city) {
+  public WeatherData getWeatherByCityName(@RequestParam("city") String city, Principal principal) {
     String key = resolver.getProperty("weather.key");
     ClientCommand command = new GetWeatherByCity(key, city);
     return taskExecutor.invokeClient(command);
@@ -32,7 +33,7 @@ public class WeatherController {
 
   @ResponseBody
   @RequestMapping(value = WEATHER_BY_COORDS, method = RequestMethod.GET, produces = "application/json")
-  public WeatherData getWeatherByCoords(@RequestParam("lat") Float lat, @RequestParam("lon") Float lon) {
+  public WeatherData getWeatherByCoords(@RequestParam("lat") Float lat, @RequestParam("lon") Float lon, Principal principal) {
     String key = resolver.getProperty("weather.key");
     ClientCommand command = new GetWeatherByCoords(key, lon, lat);
     return taskExecutor.invokeClient(command);

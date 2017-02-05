@@ -1,5 +1,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
+<sec:authorize var="isAuth" access="isAuthenticated()" />
+<sec:authentication var="principal" property="principal" />
 
 <!-- Navigation -->
 <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
@@ -11,7 +15,24 @@
       <span class="icon-bar"></span>
     </button>
     <a class="navbar-brand" href="<c:url value="/viewer"/>">Weather viewer</a>
+
   </div>
+
+  <ul class="nav navbar-top-links navbar-right">
+    <c:choose>
+    <c:when test="${isAuth}">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-user fa-fw"></i> ${principal.username} <i class="fa fa-caret-down"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-user">
+            <li><a href="<c:url value="/j_security_logout" />"><i class="fa fa-sign-out fa-fw"></i> Logout</a></li>
+          </ul>
+        </li>
+    </c:when>
+    </c:choose>
+  </ul>
+
   <!-- /.navbar-header -->
 
   <div class="navbar-default sidebar" role="navigation">
@@ -29,7 +50,8 @@
           <!-- /input-group -->
         </li>
         <li>
-          <a href="<c:url value="/viewer"/>"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+          <a href="<c:url value="/viewer"/>"><i class="fa fa-dashboard fa-fw"></i> Weather view</a>
+          <a href="<c:url value="/login"/>"><i class="fa fa-user fa-fw"></i> SignIn</a>
         </li>
       </ul>
     </div>
