@@ -5,6 +5,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
+import weather.viewer.security.ForwardedAuthenticationSuccessHandler;
 
 /**
  * User: Gorchakov Dmitriy
@@ -29,6 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .passwordParameter("j_password")
             .loginPage("/login").permitAll()
             .defaultSuccessUrl("/", false)
+            .successHandler(new ForwardedAuthenticationSuccessHandler()) // For the microservice design
             .and()
             .logout()
             .logoutSuccessUrl("/")
