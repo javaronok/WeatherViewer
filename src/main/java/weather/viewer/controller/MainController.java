@@ -11,7 +11,12 @@ public class MainController {
 
   @RequestMapping(value = "/", method = RequestMethod.GET)
   public String main(HttpServletRequest request) {
-    return "viewer";
+    return "redirect:/viewer";
+  }
+
+  @RequestMapping(value = "/viewer", method = RequestMethod.GET)
+  public String viewer(HttpServletRequest request) {
+    return "static/index.html";
   }
 
 }

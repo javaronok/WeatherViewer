@@ -28,20 +28,20 @@ public class AppWebMVCConfig extends WebMvcConfigurerAdapter {
     @Autowired
     Environment env;
 
-    @Override
+    /*@Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/viewer").setViewName("viewer");
+        registry.addViewController("/index").setViewName("index");
         registry.addViewController("/login").setViewName("login");
     }
 
     @Bean
-    public InternalResourceViewResolver jspViewResolver() {
+    public InternalResourceViewResolver viewResolver() {
         InternalResourceViewResolver bean = new InternalResourceViewResolver();
         bean.setPrefix("/WEB-INF/pages/");
-        bean.setSuffix(".jsp");
+        bean.setSuffix(".html");
         bean.setOrder(1);
         return bean;
-    }
+    }*/
 
     @Bean
     public MappingJackson2HttpMessageConverter jacksonMessageConverter(){
@@ -73,6 +73,8 @@ public class AppWebMVCConfig extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/js/**").addResourceLocations("/js/");
         registry.addResourceHandler("/img/**").addResourceLocations("/img/");
         registry.addResourceHandler("/libs/**").addResourceLocations("/libs/");
+        registry.addResourceHandler("/static/**").addResourceLocations("/static/");
+        registry.addResourceHandler("/build/**").addResourceLocations("/build/");
     }
 
 }

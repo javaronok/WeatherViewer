@@ -5,6 +5,8 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import weather.viewer.security.ForwardedAuthenticationSuccessHandler;
 
 /**
@@ -24,16 +26,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   protected void configure(HttpSecurity http) throws Exception {
     http.csrf().disable()
             .authorizeRequests().anyRequest().permitAll()
+            .and()
+            .httpBasic()
             .and().formLogin()
             .loginProcessingUrl("/j_security_login")
             .usernameParameter("j_username")
             .passwordParameter("j_password")
-            .loginPage("/login").permitAll()
-            .defaultSuccessUrl("/", false)
-            .successHandler(new ForwardedAuthenticationSuccessHandler()) // For the microservice design
+            .successHandler(new SimpleUrlAuthenticationSuccessHandler())
+            .failureHandler(new SimpleUrlAuthenticationFailureHandler())
             .and()
             .logout()
-            .logoutSuccessUrl("/")
             .logoutUrl("/j_security_logout");
 
   }
